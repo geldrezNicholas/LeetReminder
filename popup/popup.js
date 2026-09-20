@@ -28,7 +28,8 @@ const NOTIFY_RESULT = {
   ok: 'Notification fired.',
   'already-today': 'Already notified today. Reset the flag to fire again.',
   'nothing-due': 'Nothing due, so no notification.',
-  failed: 'Chrome refused the notification. Check its permission.'
+  failed: 'Chrome refused the notification. Check macOS notification settings.',
+  error: 'The worker hit an error. Open its console for the details.'
 };
 
 const $ = (sel) => document.querySelector(sel);
@@ -376,8 +377,18 @@ function wireDevPanel() {
     else if (action === 'notify') {
       // Doesn't reset the flag first, so firing twice in a row shows the
       // once-a-day guard actually doing its job.
-      const res = await chrome.runtime.sendMessage({ type: 'leetreminder:test-notification' });
-      setStatus(NOTIFY_RESULT[res?.reason] || 'Could not reach the worker.', 'warn');
+      let res;
+      try {
+        res = await chrome.runtime.sendMessage({ type: 'leetreminder:test-notification' });
+      } catch (err) {
+        setStatus(`Worker unreachable: ${err.message}`, 'error');
+        return;
+      }
+      setStatus(
+        NOTIFY_RESULT[res?.reason] ||
+          'No reply from the worker. Reload the extension and reopen this popup.',
+        'warn'
+      );
     } else if (action === 'wipe') {
       await dev.wipe();
     }

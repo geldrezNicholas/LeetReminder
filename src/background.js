@@ -94,6 +94,12 @@ async function maybeNotify({ today, due }) {
     .join(' · ');
 
   try {
+    // Creating with an id that already exists UPDATES that notification
+    // instead of posting a new one, and an update doesn't re-alert. If an
+    // earlier one was suppressed but left a record behind, every later
+    // reminder would silently update an invisible notification and report
+    // success. Clear first so each day's reminder is genuinely new.
+    await chrome.notifications.clear(NOTIFICATION_ID);
     await chrome.notifications.create(NOTIFICATION_ID, {
       type: 'basic',
       iconUrl: chrome.runtime.getURL('icons/icon128.png'),
@@ -171,7 +177,13 @@ chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
   if (msg.type === 'leetreminder:test-notification') {
     computeDue()
       .then((snapshot) => maybeNotify(snapshot))
-      .then((result) => sendResponse(result));
+      .then((result) => sendResponse(result))
+      .catch((err) => {
+        // Without this the port just closes and the popup sees undefined,
+        // which looks identical to the worker being unreachable.
+        console.error('[LeetReminder] test-notification failed', err);
+        sendResponse({ fired: false, reason: 'error', error: String(err) });
+      });
     return true;
   }
 });
