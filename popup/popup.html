@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>LeetReminder</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <h1 id="brand" title="LeetReminder">LeetReminder</h1>
+      <span id="due-chip" class="chip chip--quiet">0 due</span>
+    </header>
+
+    <section class="add">
+      <button id="add-current" class="btn btn--primary">Add current problem</button>
+      <button id="toggle-paste" class="btn btn--ghost" aria-expanded="false">Paste URL</button>
+      <form id="paste-form" class="paste" hidden>
+        <input
+          id="paste-url"
+          type="url"
+          spellcheck="false"
+          autocomplete="off"
+          placeholder="https://leetcode.com/problems/two-sum/"
+        />
+        <button type="submit" class="btn btn--primary btn--sm">Add</button>
+      </form>
+      <p id="status" class="status" hidden></p>
+    </section>
+
+    <main>
+      <section class="group">
+        <h2 class="group__head">
+          Due now <span id="due-count" class="count">0</span>
+        </h2>
+        <ul id="due-list" class="list"></ul>
+        <p id="due-empty" class="empty" hidden>Nothing due. Go touch grass.</p>
+      </section>
+
+      <section class="group">
+        <h2 class="group__head">
+          Upcoming <span id="upcoming-count" class="count">0</span>
+        </h2>
+        <ul id="upcoming-list" class="list list--locked"></ul>
+        <p id="upcoming-empty" class="empty" hidden>No scheduled reviews yet.</p>
+        <button id="upcoming-more" class="linklike" hidden></button>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <a href="../pages/list.html?view=all" target="_blank" id="link-all">All problems</a>
+      <span class="dot">·</span>
+      <a href="../pages/list.html?view=archive" target="_blank" id="link-archive">Archive</a>
+    </footer>
+
+    <section id="dev" class="dev" hidden>
+      <h3>Dev tools</h3>
+      <div class="dev__row">
+        <button class="btn btn--sm btn--ghost" data-dev="back1">Back-date all 1d</button>
+        <button class="btn btn--sm btn--ghost" data-dev="back7">Back-date all 7d</button>
+        <button class="btn btn--sm btn--ghost" data-dev="back31">Back-date all 31d</button>
+      </div>
+      <div class="dev__row">
+        <button class="btn btn--sm btn--ghost" data-dev="clear-notify">Reset notify flag</button>
+        <button class="btn btn--sm btn--ghost" data-dev="notify">Fire notification</button>
+        <button class="btn btn--sm btn--danger" data-dev="wipe">Wipe data</button>
+      </div>
+      <p class="dev__hint">Back-dating shifts due dates into the past so overdue rows, the badge and the notification all show up immediately.</p>
+    </section>
+
+    <script type="module" src="popup.js"></script>
+  </body>
+</html>

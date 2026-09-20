@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>LeetReminder problems</title>
+    <link rel="stylesheet" href="list.css" />
+  </head>
+  <body class="page">
+    <header class="page__head">
+      <h1 id="brand">LeetReminder</h1>
+      <p class="page__sub" id="subtitle">Fixed ladder: 1 · 3 · 7 · 14 · 30 · 60 days</p>
+      <nav class="tabs" id="tabs">
+        <button class="tab" data-view="due">Due</button>
+        <button class="tab" data-view="upcoming">Upcoming</button>
+        <button class="tab" data-view="all">All active</button>
+        <button class="tab" data-view="archive">Graduated</button>
+      </nav>
+    </header>
+
+    <p id="status" class="status" hidden></p>
+
+    <main>
+      <ul id="list" class="list"></ul>
+      <p id="empty" class="empty" hidden>Nothing here yet.</p>
+    </main>
+
+    <section class="dev" id="dev" hidden>
+      <h3>Dev tools (for testing without waiting two months)</h3>
+      <p class="dev__hint">Hidden by default. Click the title five times to toggle, or load
+        this page with <code>?dev=1</code>.</p>
+      <div class="dev__row">
+        <button class="btn btn--sm btn--ghost" data-dev="back1">Back-date all 1 day</button>
+        <button class="btn btn--sm btn--ghost" data-dev="back7">Back-date all 7 days</button>
+        <button class="btn btn--sm btn--ghost" data-dev="back31">Back-date all 31 days</button>
+        <button class="btn btn--sm btn--ghost" data-dev="clear-notify">Reset notify flag</button>
+        <button class="btn btn--sm btn--ghost" data-dev="notify">Fire daily notification</button>
+        <button class="btn btn--sm btn--danger" data-dev="wipe">Wipe all data</button>
+      </div>
+      <p class="dev__hint">
+        Back-dating moves <code>addedAt</code> and <code>dueDate</code> into the past, which as far
+        as everything else is concerned is the same thing as time passing. Each row has its own
+        <strong>−1d</strong> and <strong>−7d</strong> buttons if you only want to move one problem.
+      </p>
+    </section>
+
+    <script type="module" src="list.js"></script>
+  </body>
+</html>
